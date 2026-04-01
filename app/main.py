@@ -4,23 +4,19 @@ class Person:
     def __init__(self, name: str, age: int) -> None:
         self.name = name
         self.age = age
+        self.people[name] = self
 
 
 def create_person_list(people: list) -> list:
-    result = []
-
-    for data in people:
-        temp = Person(data["name"], data["age"])
-        result.append(temp)
-        Person.people[temp.name] = temp
+    result = [Person(person["name"], person["age"]) for person in people]
 
     for data in people:
         person = Person.people[data["name"]]
 
-        if "wife" in data and data["wife"] in Person.people:
+        if data.get("wife") and Person.people.get(data["wife"]):
             person.wife = Person.people[data["wife"]]
 
-        if "husband" in data and data["husband"] in Person.people:
+        if data.get("husband") and Person.people.get(data["husband"]):
             person.husband = Person.people[data["husband"]]
 
     return result
